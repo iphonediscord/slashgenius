@@ -184,6 +184,13 @@ diff@^4.0.1:
   resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
+discord-interactions@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/discord-interactions/-/discord-interactions-2.3.0.tgz#f83a025056250a19876274a983277b884bb3d51b"
+  integrity sha512-PboDGXOUYVKfVvFo5nMr1FbGJGeYOvC3ZB1UllQmLHLoifc5kmY7PHM5hm6QeYOkdoot+/eKcwXxfki3Mh+IHg==
+  dependencies:
+    tweetnacl "^1.0.3"
+
 dotenv@^10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"

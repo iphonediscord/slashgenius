@@ -2,12 +2,7 @@ import express from 'express';
 import nacl from 'tweetnacl';
 const app = express();
 const port = process.env.PORT || 6969;
-app.use(express.json());
-app.get('/', (req, res) => {
-    res.send("Hello World!").status(200);
-    console.log('we got a get');
-});
-app.post('/', (req, res) => {
+app.post('/interactions', (req, res) => {
     console.log(req.body);
     const signature = req.get('X-Signature-Ed25519');
     const timestamp = req.get('X-Signature-Timestamp');
@@ -25,13 +20,19 @@ app.post('/', (req, res) => {
         isVerified = false;
     }
     if (!isVerified) {
+        console.log('no verification');
         return res.send('Invalid request signature').status(401);
     }
     if (req.body['type'] == 1) {
-        res.send({ 'type': 1 }).status(200);
+        console.log('ack');
+        res.send({ "type": 1 }).status(200);
         return;
     }
-    res.send("");
+});
+app.use(express.json());
+app.get('/', (req, res) => {
+    res.send("Hello World!").status(200);
+    console.log('we got a get');
 });
 const initialiseServer = () => {
     app.listen(port, () => {
