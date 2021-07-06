@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
-let PUBLIC_KEY = 'sixty nine';
-let CLIENT_ID = '420';
-let CLIENT_SECRET = 'dab';
+let PUBLIC_KEY = 'public dabbing';
+let CLIENT_ID;
+let CLIENT_SECRET;
 const initialiseEnvironment = () => {
     dotenv.config();
     if (process.env.PUBLIC_KEY === undefined || process.env.CLIENT_ID === undefined || process.env.CLIENT_SECRET === undefined) {
