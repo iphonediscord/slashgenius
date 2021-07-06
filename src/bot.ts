@@ -1,15 +1,11 @@
 import axios from 'axios'
 import querystring from 'querystring'
 
-import { initialiseServer } from './server.js'
-
-
 import { initialiseEnvironment, CLIENT_ID, CLIENT_SECRET } from './lib/environment.js';
-
 initialiseEnvironment();
-initialiseServer();
 
-console.log("hello world");
+import { initialiseServer } from './server.js'
+initialiseServer();
 
 
 type Credentials = {
