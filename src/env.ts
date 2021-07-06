@@ -9,5 +9,3 @@ module.exports = {
     CLIENT_SECRET: process.env.CLIENT_SECRET,
 
 }
-
-yo wtf
