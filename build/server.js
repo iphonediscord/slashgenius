@@ -1,15 +1,11 @@
 import express from 'express';
-import { json } from 'body-parser';
 import nacl from 'tweetnacl';
 const app = express();
 const port = 6969;
-app.use(json());
+app.use(express.json());
 app.get('/', (req, res) => {
     res.send("Hello World!").status(200);
     console.log('we got a get');
-});
-app.listen(port, () => {
-    console.log(`Listening on http://localhost:${port}`);
 });
 app.post('/', (req, res) => {
     console.log(req.body);
@@ -37,3 +33,9 @@ app.post('/', (req, res) => {
     }
     res.send("");
 });
+const initialiseServer = () => {
+    app.listen(port, () => {
+        console.log(`Listening on http://localhost:${port}`);
+    });
+};
+export { initialiseServer };

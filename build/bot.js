@@ -1,7 +1,9 @@
 import axios from 'axios';
 import querystring from 'querystring';
-import { init, CLIENT_ID, CLIENT_SECRET } from './lib/environment.js';
-init();
+import { initialiseServer } from './server.js';
+import { initialiseEnvironment, CLIENT_ID, CLIENT_SECRET } from './lib/environment.js';
+initialiseEnvironment();
+initialiseServer();
 console.log("hello world");
 const getToken = async () => {
     try {
