@@ -3,7 +3,7 @@ import express from 'express';
 import nacl from 'tweetnacl';
 
 const app: express.Application = express();
-const port = 6969;
+const port = process.env.PORT || 6969;
 
 app.use(express.json());
 
