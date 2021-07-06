@@ -1,9 +1,13 @@
+import { config } from 'dotenv';
+
 let PUBLIC_KEY: string;
 let CLIENT_ID: string;
 let CLIENT_SECRET: string;
 
 const init = () => {
-    require('dotenv').config();
+    config();
+
+    console.log('initialising');
 
     PUBLIC_KEY === process.env.PUBLIC_KEY
     CLIENT_ID === process.env.CLIENT_ID
