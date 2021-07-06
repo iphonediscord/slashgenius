@@ -5,14 +5,7 @@ import nacl from 'tweetnacl';
 const app: express.Application = express();
 const port = process.env.PORT || 6969;
 
-app.use(express.json());
-
-app.get('/', (req: express.Request, res: express.Response) => {
-    res.send("Hello World!").status(200);
-    console.log('we got a get');
-});
-
-app.post('/', (req: express.Request, res: express.Response) => {
+app.post('/interactions', (req: express.Request, res: express.Response) => {
 
     console.log(req.body);
 
@@ -48,6 +41,14 @@ app.post('/', (req: express.Request, res: express.Response) => {
         return;
     }
 })
+
+app.use(express.json());
+
+app.get('/', (req: express.Request, res: express.Response) => {
+    res.send("Hello World!").status(200);
+    console.log('we got a get');
+});
+
 
 const initialiseServer = () => {
     app.listen(port, () => {
