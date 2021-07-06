@@ -1,7 +1,6 @@
-   let PUBLIC_KEY;
+let PUBLIC_KEY;
 let CLIENT_ID;
 let CLIENT_SECRET;
-
 const init = () => {
     require('dotenv').config();
     PUBLIC_KEY === process.env.PUBLIC_KEY;

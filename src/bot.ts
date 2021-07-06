@@ -2,7 +2,7 @@ import axios from 'axios'
 import querystring from 'querystring'
 
 import * as server from './server'
-import { init, CLIENT_ID, CLIENT_SECRET } from './env';
+import { init, CLIENT_ID, CLIENT_SECRET } from './lib/environment';
 
 init();
 

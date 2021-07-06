@@ -8,7 +8,6 @@ app.get('/', (req, res) => {
     res.send("Hello World!").status(200);
     console.log('we got a get');
 });
-//callback 60.227.216.24
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}`);
 });
