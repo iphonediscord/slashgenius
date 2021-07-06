@@ -1,10 +1,9 @@
 import axios from 'axios';
 import querystring from 'querystring';
-import { initialiseServer } from './server.js';
 import { initialiseEnvironment, CLIENT_ID, CLIENT_SECRET } from './lib/environment.js';
 initialiseEnvironment();
+import { initialiseServer } from './server.js';
 initialiseServer();
-console.log("hello world");
 const getToken = async () => {
     try {
         let response = await axios(`https://discord.com/api/v8/oauth2/token`, {
@@ -82,3 +81,4 @@ const createTestCommand = async () => {
     }
 };
 createTestCommand();
+//# sourceMappingURL=bot.js.map
