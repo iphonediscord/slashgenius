@@ -4,6 +4,7 @@
   "engines": {
     "node": "14.17.1"
   },
+  "type": "module",
   "scripts": {
     "dev": "ts-node ./src/bot.ts",
     "start": "node build/bot.js",
