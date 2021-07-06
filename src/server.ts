@@ -7,6 +7,7 @@ import { PUBLIC_KEY } from './lib/environment.js';
 const app: express.Application = express();
 const port = process.env.PORT || 6969;
 
+
 app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), (req: express.Request, res: express.Response) => {
 
     const interaction = req.body;
