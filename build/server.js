@@ -1,8 +1,12 @@
 import express from 'express';
 import nacl from 'tweetnacl';
 const app = express();
-const port = 6969;
+const port = process.env.PORT || 6969;
 app.use(express.json());
+app.get('/', (req, res) => {
+    res.send("Hello World!").status(200);
+    console.log('we got a get');
+});
 app.post('/', (req, res) => {
     console.log(req.body);
     const signature = req.get('X-Signature-Ed25519');
@@ -30,10 +34,6 @@ app.post('/', (req, res) => {
     res.send("");
 });
 const initialiseServer = () => {
-    app.get('/', (req, res) => {
-        res.send("Hello World!").status(200);
-        console.log('we got a get');
-    });
     app.listen(port, () => {
         console.log(`Listening on http://localhost:${port}`);
     });

@@ -39,13 +39,14 @@ app.post('/', (req: express.Request, res: express.Response) => {
     }
 
     if (!isVerified) {
+        console.log('no verification');
         return res.send('Invalid request signature').status(401);
     }
     if (req.body['type'] == 1) {
-        res.send({ 'type': 1 }).status(200);
+        console.log('ack');
+        res.send({ "type": 1 }).status(200);
         return;
     }
-    res.send("");
 })
 
 const initialiseServer = () => {
