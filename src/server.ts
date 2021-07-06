@@ -2,7 +2,7 @@ import express from 'express';
 
 import { InteractionResponseType, InteractionType, verifyKeyMiddleware } from 'discord-interactions';
 
-import { PUBLIC_KEY } from './lib/environment';
+import { PUBLIC_KEY } from './lib/environment.js';
 
 const app: express.Application = express();
 const port = process.env.PORT || 6969;
