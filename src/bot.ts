@@ -1,10 +1,13 @@
 import axios from 'axios'
 import querystring from 'querystring'
 
-import * as server from './server'
-import { init, CLIENT_ID, CLIENT_SECRET } from './lib/environment.js';
+import { initialiseServer } from './server.js'
 
-init();
+
+import { initialiseEnvironment, CLIENT_ID, CLIENT_SECRET } from './lib/environment.js';
+
+initialiseEnvironment();
+initialiseServer();
 
 console.log("hello world");
 
