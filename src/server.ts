@@ -15,7 +15,7 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), (req: express.Request
         res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-                content: 'yo yo yo isaac stinks',
+                content: 'yo yo yo willow smells',
             }
         })
     }
