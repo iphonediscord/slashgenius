@@ -1,8 +1,8 @@
-const axios = require('axios').default;
-const querystring = require('querystring');
+import axios from 'axios'
+import querystring from 'querystring'
 
-const server = require('./server');
-const { init, CLIENT_ID, CLIENT_SECRET } = require('./env');
+import * as server from './server'
+import { init, CLIENT_ID, CLIENT_SECRET } from './env';
 
 init();
 
@@ -18,9 +18,8 @@ type Credentials = {
 
 const getToken = async (): Promise<Credentials> => {
     try {
-        let response = await axios({
+        let response = await axios(`https://discord.com/api/v8/oauth2/token`, {
             method: 'post',
-            url: 'https://discord.com/api/v8/oauth2/token',
             data: querystring.stringify({ 'grant_type': 'client_credentials', 'scope': 'applications.commands.update' }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
