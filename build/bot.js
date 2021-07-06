@@ -1,15 +1,12 @@
-"use strict";
-const axios = require('axios').default;
-const querystring = require('querystring');
-const server = require('./server');
-const { init, CLIENT_ID, CLIENT_SECRET } = require('./env');
+import axios from 'axios';
+import querystring from 'querystring';
+import { init, CLIENT_ID, CLIENT_SECRET } from './env';
 init();
 console.log("hello world");
 const getToken = async () => {
     try {
-        let response = await axios({
+        let response = await axios(`https://discord.com/api/v8/oauth2/token`, {
             method: 'post',
-            url: 'https://discord.com/api/v8/oauth2/token',
             data: querystring.stringify({ 'grant_type': 'client_credentials', 'scope': 'applications.commands.update' }),
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
