@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "ts-node ./src/bot.ts"
+    "dev": "ts-node ./src/bot.ts",
+    "start": "node build/bot.js",
+    "build": "tsc",
+    "postinstall": "yarn build"
   },
   "author": "Floppa#00059",
   "license": "MIT",
