@@ -7,6 +7,11 @@ const port = 6969;
 
 app.use(express.json());
 
+app.get('/', (req: express.Request, res: express.Response) => {
+    res.send("Hello World!").status(200);
+    console.log('we got a get');
+});
+
 app.post('/', (req: express.Request, res: express.Response) => {
 
     console.log(req.body);
@@ -44,10 +49,6 @@ app.post('/', (req: express.Request, res: express.Response) => {
 })
 
 const initialiseServer = () => {
-    app.get('/', (req: express.Request, res: express.Response) => {
-        res.send("Hello World!").status(200);
-        console.log('we got a get');
-    });
     app.listen(port, () => {
         console.log(`Listening on http://localhost:${port}`);
     })
