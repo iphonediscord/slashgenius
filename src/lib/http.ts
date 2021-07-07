@@ -25,17 +25,18 @@ const getTokenResponse = async (): Promise<Token> => {
 }
 
 const editInteractionResponse = async (token: string, interactionResponse: any) => {
-    console.log(token);
-    console.dir(interactionResponse);
-
-    await axios(`https://discord.com/api/v8/webhooks/${APP_ID}/${token}/messages/@original`, {
-        method: 'PATCH',
-        data: interactionResponse
-    });
+    try {
+        await axios(`https://discord.com/api/v8/webhooks/${APP_ID}/${token}/messages/@original`, {
+            method: 'patch',
+            data: interactionResponse
+        })
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 const createGlobalCommand = async (commandData: any) => {
-    let response = await axios(`https://discord.com/api/v8/applications/${APP_ID}/commands`, {
+    await axios(`https://discord.com/api/v8/applications/${APP_ID}/commands`, {
         method: 'POST',
         data: commandData,
         headers: {
