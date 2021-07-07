@@ -1,10 +1,6 @@
 import axios from 'axios'
 
-<<<<<<< Updated upstream
-import { initialiseEnvironment, CLIENT_ID, getInteractionToken } from './lib/authentication.js';
-=======
 import { initialiseEnvironment, CLIENT_ID, getBearerToken } from './lib/authentication.js';
->>>>>>> Stashed changes
 initialiseEnvironment();
 
 import { initialiseServer } from './server.js'
@@ -28,11 +24,7 @@ const createTestCommand = async () => {
     }
 
     let commandHeaders = {
-<<<<<<< Updated upstream
-        "Authorization": `Bearer ${await getToken()}`
-=======
         "Authorization": `Bearer ${await getBearerToken()}`
->>>>>>> Stashed changes
     };
 
     try {
