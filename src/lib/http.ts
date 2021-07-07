@@ -4,7 +4,7 @@ import { InteractionResponse, Token } from '../types';
 
 import { CLIENT_ID, CLIENT_SECRET } from './authentication.js';
 
-const getBearerToken = async (): Promise<Token> => {
+const getTokenResponse = async (): Promise<Token> => {
     let response = await axios(`https://discord.com/api/v8/oauth2/token`, {
         method: 'post',
         data: querystring.stringify({ 'grant_type': 'client_credentials', 'scope': 'applications.commands.update' }),
@@ -28,4 +28,4 @@ const editInteractionResponse = async (token: string, response: InteractionRespo
 
 }
 
-export { getBearerToken }
+export { getTokenResponse }

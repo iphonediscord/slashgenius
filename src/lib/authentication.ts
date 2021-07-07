@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import querystring from 'querystring';
 
+import { getTokenResponse } from './http';
+
 import { Token } from '../types';
 
 let PUBLIC_KEY: string = "808e1ba34b0ba4940e8cb60a1fc945433a2d2b1f38ba747e7827bb02c09a23fc";
@@ -28,7 +30,7 @@ const initialiseEnvironment = () => {
 
 let currentToken: Token | null = null;
 
-const getBearerToken = async (): Promise<String> => {
+const getBearerToken = async (): Promise<string> => {
     if (!initialised) {
         initialiseEnvironment();
     }
@@ -36,7 +38,7 @@ const getBearerToken = async (): Promise<String> => {
     const secondsSinceEpoch = Math.round(Date.now() / 1000);
 
     if (currentToken === null || currentToken.expires_at < secondsSinceEpoch) {
-        currentToken = await getBearerToken();
+        currentToken = await getTokenResponse();
     }
 
     return currentToken.access_token;
