@@ -73,6 +73,9 @@ const handleCommand = (interaction: any) => {
         case 'delete':
             deleteTag(interaction);
             break;
+        default:
+            displayTag(interaction);
+            break;
     }
 
     disconnect();
@@ -81,20 +84,26 @@ const handleCommand = (interaction: any) => {
 
 const createTag = (interaction: any) => {
     editInteractionResponse(interaction.token, {
-        "type": 4,
-        "data": {
-            "tts": false,
-            "content": "Successfully created sussy baka!"
-        }
+        "content": "Successfully created a new tag!"
     })
 }
 
 const editTag = (interaction: any) => {
-
+    editInteractionResponse(interaction.token, {
+        "content": `Successfully edited tag!`
+    })
 }
 
 const deleteTag = (interaction: any) => {
+    editInteractionResponse(interaction.token, {
+        "content": `Successfully deleted tag!`
+    })
+}
 
+const displayTag = (interaction: any) => {
+    editInteractionResponse(interaction.token, {
+        "content": `Successfully edited tag!`
+    })
 }
 
 export { handleCommand, createDefaultCommands }
