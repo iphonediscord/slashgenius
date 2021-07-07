@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
 import { connect, disconnect } from '../database/database.js';
 import { Tag } from '../database/tags.js';
-import { createGuildCommand } from '../lib/http.js';
+import { createGuildCommand, editInteractionResponse } from '../lib/http.js';
 
 const createDefaultCommands = () => {
     createGuildCommand({
@@ -13,13 +13,45 @@ const createDefaultCommands = () => {
             {
                 "name": "name",
                 "description": "Name of the tag",
-                "type": "3",
+                "type": 3,
                 "required": true
             },
             {
                 "name": "content",
                 "description": "Content of the tag",
                 "type": "3",
+                "required": true
+            }
+        ]
+    }, '409759972986191872', true);
+
+    createGuildCommand({
+        "name": "edit",
+        "description": "Edits a tag",
+        "options": [
+            {
+                "name": "name",
+                "description": "Name of the tag",
+                "type": 3,
+                "required": true
+            },
+            {
+                "name": "new-content",
+                "description": "New content of the tag",
+                "type": "3",
+                "required": true
+            }
+        ]
+    }, '409759972986191872', true);
+
+    createGuildCommand({
+        "name": "delete",
+        "description": "Deletes a tag",
+        "options": [
+            {
+                "name": "name",
+                "description": "Name of the tag",
+                "type": 3,
                 "required": true
             }
         ]
@@ -35,9 +67,6 @@ const handleCommand = (interaction: any) => {
         case 'create':
             createTag(interaction);
             break;
-        case 'update':
-            updateTags(interaction);
-            break;
         case 'edit':
             editTag(interaction);
             break;
@@ -51,11 +80,13 @@ const handleCommand = (interaction: any) => {
 }
 
 const createTag = (interaction: any) => {
-
-}
-
-const updateTags = (interaction: any) => {
-
+    editInteractionResponse(interaction.token, {
+        "type": 4,
+        "data": {
+            "tts": false,
+            "content": "Successfully created sussy baka!"
+        }
+    })
 }
 
 const editTag = (interaction: any) => {
