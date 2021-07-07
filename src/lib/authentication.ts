@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import querystring from 'querystring';
 
-import { getTokenResponse } from './http';
+import { getTokenResponse } from './http.js';
 
 import { Token } from '../types';
 
