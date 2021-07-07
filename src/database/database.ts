@@ -1,21 +1,21 @@
-import * as Mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { DB_URI } from '../lib/authentication.js';
 
-let database: Mongoose.Connection;
+let database: mongoose.Connection;
 
 const connect = () => {
     if (database) {
         return;
     }
 
-    Mongoose.connect(DB_URI, {
+    mongoose.connect(DB_URI, {
         useNewUrlParser: true,
         useFindAndModify: true,
         useUnifiedTopology: true,
         useCreateIndex: true
     });
 
-    database = Mongoose.connection;
+    database = mongoose.connection;
 }
 
 const disconnect = () => {
@@ -23,7 +23,7 @@ const disconnect = () => {
         return;
     }
 
-    database = Mongoose.connection;
+    database = mongoose.connection;
 }
 
 export { connect, disconnect };
