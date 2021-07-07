@@ -28,7 +28,7 @@ const editInteractionResponse = async (token: string, interactionResponse: any) 
     console.log(token);
     console.dir(interactionResponse);
 
-    await axios(`https://discord.com/api/v8/webooks/${APP_ID}/${token}/messages/@original`, {
+    await axios(`https://discord.com/api/v8/webhooks/${APP_ID}/${token}/messages/@original`, {
         method: 'PATCH',
         data: interactionResponse
     });
