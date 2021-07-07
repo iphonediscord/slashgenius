@@ -1,23 +1,21 @@
 import express from 'express';
-import { InteractionResponseType, InteractionType, verifyKeyMiddleware } from 'discord-interactions';
-import { PUBLIC_KEY } from './lib/environment.js';
+import { InteractionType, verifyKeyMiddleware } from 'discord-interactions';
+import { PUBLIC_KEY } from './lib/authentication.js';
+import { handleCommand } from './commands.js';
 const app = express();
 const port = process.env.PORT || 6969;
 app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), (req, res) => {
-    const interaction = req.body;
+    let interaction = req.body;
     if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-        res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-                content: 'yo yo yo willow smells',
+        let response = {
+            "type": 5,
+            "data": {
+                "tts": false,
             }
-        });
+        };
+        res.send(response).status(200);
+        handleCommand(interaction);
     }
-});
-app.use(express.json());
-app.get('/', (req, res) => {
-    res.send("Hello World!").status(200);
-    console.log('we got a get');
 });
 const initialiseServer = () => {
     app.listen(port, () => {
