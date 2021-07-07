@@ -4,7 +4,7 @@ import { InteractionType, verifyKeyMiddleware } from 'discord-interactions';
 
 import { PUBLIC_KEY } from './lib/authentication.js';
 
-import { handleCommand } from './commands.js';
+import { handleCommand } from './commands/commands.js';
 
 const app: express.Application = express();
 const port = process.env.PORT || 6969;
