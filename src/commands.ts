@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
 
+<<<<<<< Updated upstream
 const handleCommand = (req: Request, res: Response) => {
     const interaction = req.body;
 
@@ -13,6 +14,15 @@ const handleCommand = (req: Request, res: Response) => {
             }
         })
     }
+=======
+const handleCommand = (interaction: any) => {
+    console.log(interaction);
+
+    let data = {
+
+    }
+
+>>>>>>> Stashed changes
 }
 
 export { handleCommand }
