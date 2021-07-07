@@ -1,6 +1,6 @@
 import axios from 'axios'
 import querystring from 'querystring';
-import { InteractionResponse, Token } from '../types';
+import { Token } from '../types';
 
 import { CLIENT_ID, CLIENT_SECRET, APP_ID, getBearerToken } from './authentication.js';
 
@@ -24,7 +24,7 @@ const getTokenResponse = async (): Promise<Token> => {
     return token;
 }
 
-const editInteractionResponse = async (token: string, interactionResponse: InteractionResponse) => {
+const editInteractionResponse = async (token: string, interactionResponse: any) => {
     await axios(`https://discord.com/api/v8/webooks/${APP_ID}/${token}/messages/@original`, {
         method: 'PATCH',
         data: interactionResponse
@@ -57,7 +57,8 @@ const createGuildCommand = async (commandData: any, guildId: string, tagManagerO
     })
 
     if (tagManagerOnly) {
-        let { commandId } = response.data;
+        let { id } = response.data;
+
         let permissions: any[] = [];
         tagManagers.forEach((roleId) => {
             permissions.push({
@@ -68,8 +69,8 @@ const createGuildCommand = async (commandData: any, guildId: string, tagManagerO
         })
 
         try {
-            await axios(`https://discord.com/api/v8/applications/${APP_ID}/guilds/${guildId}/commands/${commandId}/permissions`, {
-                method: 'PUT',
+            await axios(`https://discord.com/api/v8/applications/${APP_ID}/guilds/${guildId}/commands/${id}/permissions`, {
+                method: 'put',
                 data: {
                     "permissions": permissions
                 },
