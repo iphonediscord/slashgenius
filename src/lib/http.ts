@@ -2,8 +2,6 @@ import axios from 'axios'
 import querystring from 'querystring';
 import { Token } from '../types';
 
-import { CLIENT_ID, CLIENT_SECRET, APP_ID, getBearerToken } from './authentication.js';
-
 const getTokenResponse = async (): Promise<Token> => {
     let response = await axios(`https://discord.com/api/v8/oauth2/token`, {
         method: 'post',

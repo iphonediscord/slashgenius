@@ -1,5 +1,4 @@
 import * as Mongoose from 'mongoose';
-import { DB_URI } from '../lib/authentication.js';
 
 let database: Mongoose.Connection;
 
@@ -8,7 +7,12 @@ const connect = () => {
         return;
     }
 
-    Mongoose.connect(DB_URI, {
+    if (process.env.DB_URI === undefined) {
+        console.log('No DB URI environment variable provided. Program will now exit.');
+        process.exit(0);
+    }
+
+    Mongoose.connect(process.env.DB_URI, {
         useNewUrlParser: true,
         useFindAndModify: true,
         useUnifiedTopology: true,

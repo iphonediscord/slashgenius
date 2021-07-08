@@ -1,7 +1,4 @@
-import axios from 'axios'
-
-import { initialiseEnvironment, CLIENT_ID, getBearerToken } from './lib/authentication.js';
-initialiseEnvironment();
+import './util/env'
 
 import { initialiseServer } from './server.js'
 initialiseServer();
