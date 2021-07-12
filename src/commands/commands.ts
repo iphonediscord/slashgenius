@@ -3,12 +3,21 @@ import { Request, Response } from 'express';
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
 import { connect, disconnect } from '../database/database.js';
 import { Tag } from '../database/tags.js';
+import { ResponseAPI } from '../discord/ReponseAPI.js';
+import { CommandParams, Interaction, WebhookMessageContent } from '../types/discord.types.js';
+import { GuildCommandAPI } from '../discord/CommandAPI.js';
+import fs from 'fs';
 
-const createDefaultCommands = () => {
-
+const registerDefaultCommands = () => {
+    let api = new GuildCommandAPI('409759972986191872');
+    let data = fs.readFileSync('./defaults.json', 'utf8');
+    let defaults: CommandParams[] = JSON.parse(data);
+    defaults.forEach((params) => {
+        api.createCommand(params);
+    })
 }
 
-const handleCommand = (interaction: any) => {
+const handleCommand = (interaction: Interaction) => {
 
     let { name } = interaction.data;
 
@@ -23,28 +32,44 @@ const handleCommand = (interaction: any) => {
         case 'delete':
             deleteTag(interaction);
             break;
+        case 'floppa':
+            showFloppa(interaction);
+            break;
+        default:
+            displayTag(interaction);
+            break;
     }
 
     disconnect();
 
 }
 
-const createTag = (interaction: any) => {
-    editInteractionResponse(interaction.token, {
-        "type": 4,
-        "data": {
-            "tts": false,
-            "content": "Successfully created sussy baka!"
-        }
-    })
+const createTag = (interaction: Interaction) => {
+    let newContent: WebhookMessageContent = {
+        content: 'Successfully created sussy baka!'
+    }
+
+    new ResponseAPI(interaction.token).editOriginalResponse(newContent);
 }
 
-const editTag = (interaction: any) => {
+const showFloppa = (interaction: Interaction) => {
+    let newContent: WebhookMessageContent = {
+        content: 'https://tenor.com/view/floppa-gif-22061121'
+    }
+
+    new ResponseAPI(interaction.token).editOriginalResponse(newContent);
+}
+
+const editTag = (interaction: Interaction) => {
 
 }
 
-const deleteTag = (interaction: any) => {
+const deleteTag = (interaction: Interaction) => {
 
 }
 
-export { handleCommand, createDefaultCommands }
+const displayTag = (interaction: Interaction) => {
+
+}
+
+export { handleCommand, registerDefaultCommands }
