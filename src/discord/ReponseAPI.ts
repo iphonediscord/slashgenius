@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-import { WebhookContent } from '../types';
+import { WebhookMessageContent } from '../types';
 
 let apiUrl = `https://discord.com/api/v8`
 
@@ -24,7 +24,7 @@ export class ResponseAPI {
         return response.data;
     }
 
-    editOriginalResponse = async (content: WebhookContent) => {
+    editOriginalResponse = async (content: WebhookMessageContent) => {
         let response = await this.api.patch('', { 'data': content });
         return response.data;
     }
