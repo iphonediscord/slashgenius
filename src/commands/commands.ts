@@ -2,16 +2,13 @@ import { Request, Response } from 'express';
 
 import { InteractionResponseType, InteractionType } from 'discord-interactions';
 import { connect, disconnect } from '../database/database.js';
-import { Tag } from '../database/tags.js';
 import { ResponseAPI } from '../discord/ReponseAPI.js';
 import { CommandParams, Interaction, WebhookMessageContent } from '../types/discord.types.js';
 import { GuildCommandAPI } from '../discord/CommandAPI.js';
-import fs from 'fs';
+import defaults from './defaults.json';
 
 const registerDefaultCommands = () => {
     let api = new GuildCommandAPI('409759972986191872');
-    let data = fs.readFileSync('./defaults.json', 'utf8');
-    let defaults: CommandParams[] = JSON.parse(data);
     defaults.forEach((params) => {
         api.createCommand(params);
     })
