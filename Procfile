@@ -1,1 +1,1 @@
-web: node ./build/index.js
+web: node --experimental-json-modules ./build/index.js
