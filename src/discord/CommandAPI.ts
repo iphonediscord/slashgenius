@@ -34,12 +34,11 @@ class CommandAPI {
                     CommandAPI.credentials = await getNewCredentials(secondsSinceEpoch);
                 }
 
-                config.headers = { 'Authorization': CommandAPI.credentials.access_token }
-
-                console.dir(config.headers);
+                config.headers = { 'Authorization': `Bearer ${CommandAPI.credentials.access_token}` }
 
                 return config;
             }, (error) => {
+                console.log('Error attaining bearer token.');
                 console.log(error.request);
             }
         );
