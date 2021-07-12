@@ -36,6 +36,8 @@ class CommandAPI {
 
                 config.headers = { 'Authorization': CommandAPI.credentials.access_token }
 
+                console.dir(config.headers);
+
                 return config;
             }, (error) => {
                 console.log(error.request);
@@ -55,6 +57,9 @@ class CommandAPI {
 
     createCommand = async (params: CommandParams): Promise<ApplicationCommand> => {
         let response = await this.api.post('', params);
+
+        console.dir(response);
+
         return response.data;
     }
 
