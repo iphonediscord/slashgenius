@@ -1,4 +1,4 @@
-import './util/env'
+import './util/env.js'
 
 import { initialiseServer } from './server.js'
 initialiseServer();
