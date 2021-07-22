@@ -22,7 +22,6 @@ class CommandAPI {
         this.api.interceptors.response.use(response => response, (error) => {
             console.log(error.response.data);
             console.log(error.response.status);
-            console.log(error.response.headers);
         })
 
         CommandAPI.credentials = null;
@@ -56,8 +55,6 @@ class CommandAPI {
 
     createCommand = async (params: CommandParams): Promise<ApplicationCommand> => {
         let response = await this.api.post('', params);
-
-        console.dir(response);
 
         return response.data;
     }
