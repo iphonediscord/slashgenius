@@ -6,3 +6,5 @@ initialiseServer();
 import { registerDefaultCommands } from './commands/commands.js';
 
 registerDefaultCommands();
+
+export { };
