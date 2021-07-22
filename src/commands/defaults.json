@@ -15,7 +15,9 @@
                 "type": 3,
                 "required": true
             }
-        ]
+        ],
+        "default_permission": false,
+        "managerOnly": true
     },
     {
         "name": "edit",
@@ -33,7 +35,9 @@
                 "type": 3,
                 "required": true
             }
-        ]
+        ],
+        "default_permission": false,
+        "managerOnly": true
     },
     {
         "name": "delete",
@@ -45,10 +49,18 @@
                 "type": 3,
                 "required": true
             }
-        ]
+        ],
+        "default_permission": false,
+        "managerOnly": true
     },
     {
         "name": "floppa",
-        "description": "Big Floppa"
+        "description": "Big Floppa",
+        "managerOnly": false
+    },
+    {
+        "name": "ask",
+        "description": "Displays the `ask` tag",
+        "managerOnly": false
     }
 ]
