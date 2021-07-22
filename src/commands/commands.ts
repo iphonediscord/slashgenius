@@ -1,16 +1,17 @@
-import { Request, Response } from 'express';
-
-import { InteractionResponseType, InteractionType } from 'discord-interactions';
 import { connect, disconnect } from '../database/database.js';
 import { ResponseAPI } from '../discord/ReponseAPI.js';
-import { CommandParams, Interaction, WebhookMessageContent } from '../types/discord.types.js';
+import { Interaction, WebhookMessageContent } from '../types/discord.types.js';
 import { GuildCommandAPI } from '../discord/CommandAPI.js';
 import defaults from './defaults.json';
 
 const registerDefaultCommands = () => {
     let api = new GuildCommandAPI('409759972986191872');
     defaults.forEach((params) => {
-        api.createCommand(params);
+        try {
+            api.createCommand(params);
+        } catch (error) {
+            console.log(`Error creating '${params.name}' command`, error);
+        }
     })
 }
 
@@ -70,7 +71,10 @@ const deleteTag = (interaction: Interaction) => {
 }
 
 const displayTag = (interaction: Interaction) => {
+    let { name } = interaction.data;
 
+    //Lookup name in db and display it
+    
 }
 
 export { handleCommand, registerDefaultCommands }
