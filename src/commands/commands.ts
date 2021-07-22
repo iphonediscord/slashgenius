@@ -3,14 +3,29 @@ import { ResponseAPI } from '../discord/ReponseAPI.js';
 import { CommandParams, CommandPermissions, GuildCommandPermissions, Interaction, WebhookMessageContent } from '../types/discord.types.js';
 import { GuildCommandAPI } from '../discord/CommandAPI.js';
 import defaults from './defaults.json';
-import mongoose from 'mongoose';
-import { Tag } from '../database/tags.js';
+//import { Tag } from '../database/tags.js';
 import { TagDocument } from '../types/database.types.js';
 
 let managerRoles = ['411543613076406294', '663903105133576202'];
 let rIphoneId = '409759972986191872'
 
-const registerDefaultCommands = () => {
+const registerCommands = async () => {
+    let commands: CommandParams[] = [];
+    let defaultCommands: CommandParams[] = defaults;
+
+    try {
+        connect();
+    } catch (error) {
+        console.log('Error connecting to DB', error);
+    }
+
+    const allTags = await Tag.find();
+
+    allTags.forEach((tag: TagDocument) => {
+        console.log(tag.content);
+    })
+    commands.push(defaultCommands);
+    
     let api = new GuildCommandAPI(rIphoneId);
     defaults.forEach(async (params) => {
         try {
@@ -104,7 +119,7 @@ const updateCommands = async (interaction: Interaction) => {
         });
     });
 
-    new GuildCommandAPI(rIphoneId).bulkOverwriteCommands(commands)
+    
 }
 
 const displayTag = async (interaction: Interaction) => {
