@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node ./src/index.ts",
-    "start": "node build/index.js",
+    "start": "node --experimental-json-modules build/index.js",
     "build": "tsc",
     "postinstall": "yarn build"
   },
