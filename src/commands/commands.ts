@@ -18,7 +18,11 @@ const handleCommand = (interaction: Interaction) => {
 
     let { name } = interaction.data;
 
-    connect();
+    try {
+        connect();
+    } catch (error) {
+        console.log(`Error connecting to DB`, error);
+    }
     switch (name) {
         case 'create':
             createTag(interaction);

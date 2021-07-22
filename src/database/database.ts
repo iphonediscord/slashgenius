@@ -1,6 +1,6 @@
-import * as Mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
-let database: Mongoose.Connection;
+let database: mongoose.Connection;
 
 const connect = () => {
     if (database) {
@@ -12,14 +12,14 @@ const connect = () => {
         process.exit(0);
     }
 
-    Mongoose.connect(process.env.DB_URI, {
+    mongoose.connect(process.env.DB_URI, {
         useNewUrlParser: true,
         useFindAndModify: true,
         useUnifiedTopology: true,
         useCreateIndex: true
     });
 
-    database = Mongoose.connection;
+    database = mongoose.connection;
 }
 
 const disconnect = () => {
@@ -27,7 +27,7 @@ const disconnect = () => {
         return;
     }
 
-    database = Mongoose.connection;
+    database = mongoose.connection;
 }
 
 export { connect, disconnect };
