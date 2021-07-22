@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import rateLimit from "axios-rate-limit";
 
 import { WebhookMessageContent } from '../types';
 
