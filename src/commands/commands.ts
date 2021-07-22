@@ -56,7 +56,7 @@ const createTag = (interaction: Interaction) => {
 
 const showRandom = (interaction: Interaction) => {
     let newContent: WebhookMessageContent = {
-        content: 'tps://picsum.photos/200'
+        content: 'https://picsum.photos/200'
     }
 
     new ResponseAPI(interaction.token).editOriginalResponse(newContent);
