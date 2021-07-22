@@ -54,6 +54,14 @@ const createTag = (interaction: Interaction) => {
     new ResponseAPI(interaction.token).editOriginalResponse(newContent);
 }
 
+const showRandom = (interaction: Interaction) => {
+    let newContent: WebhookMessageContent = {
+        content: 'tps://picsum.photos/200'
+    }
+
+    new ResponseAPI(interaction.token).editOriginalResponse(newContent);
+}
+
 const showFloppa = (interaction: Interaction) => {
     let newContent: WebhookMessageContent = {
         content: 'https://tenor.com/view/floppa-gif-22061121'

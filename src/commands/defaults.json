@@ -50,5 +50,9 @@
     {
         "name": "floppa",
         "description": "Big Floppa"
+    },
+    {
+        "name": "random",
+        "description": "Shows a random picture from the internet"
     }
 ]
