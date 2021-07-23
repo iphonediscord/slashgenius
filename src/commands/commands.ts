@@ -1,50 +1,73 @@
-import { connect, disconnect } from '../database/database.js';
 import { ResponseAPI } from '../discord/ReponseAPI.js';
-import { CommandParams, CommandPermissions, GuildCommandPermissions, Interaction, WebhookMessageContent } from '../types/discord.types.js';
+import { ApplicationCommand, CommandParams, CommandPermissions, GuildCommandPermissions, Interaction, WebhookMessageContent } from '../types/discord.types.js';
 import { GuildCommandAPI } from '../discord/CommandAPI.js';
-import defaults from './defaults.json';
-//import { Tag } from '../database/tags.js';
-import { TagDocument } from '../types/database.types.js';
+import { defaults } from './defaults.js';
+import { Db, MongoClient } from 'mongodb';
+import { getJSDocTags, transpileModule } from 'typescript';
+import { nextTick } from 'process';
 
 let managerRoles = ['411543613076406294', '663903105133576202'];
 let rIphoneId = '409759972986191872'
 
+if (process.env.DB_URI === undefined) {
+    console.log('No DB URI env variable provided. Program will now exit.')
+    process.exit(0);
+}
+const client = new MongoClient(process.env.DB_URI);
+
 const registerCommands = async () => {
+
+    //Add defaults to command list
     let commands: CommandParams[] = [];
-    let defaultCommands: CommandParams[] = defaults;
+
+    commands.push(...defaults);
+
+    //Search for all tags and add them to the command list
 
     try {
-        connect();
-    } catch (error) {
-        console.log('Error connecting to DB', error);
+        await client.connect();
+        const database = client.db('genius');
+        const tagsCollection = database.collection('tags');
+
+        const tags = await tagsCollection.find().toArray();
+
+        tags.forEach((tag) => {
+            if (isValidTagName(tag.name)) {
+                commands.push({
+                        'name': tag.name,
+                        'description': `Displays the ${tag.name} tag.`
+                    });
+            }
+        });
+
+    } finally {
+        await client.close();
     }
 
-    const allTags = await Tag.find();
-
-    allTags.forEach((tag: TagDocument) => {
-        console.log(tag.content);
-    })
-    commands.push(defaultCommands);
-    
     let api = new GuildCommandAPI(rIphoneId);
-    defaults.forEach(async (params) => {
-        try {
-            let command = await api.createCommand(params);
-            if (params.managerOnly) {
-                let permissions: CommandPermissions[] = [];
-                
-                managerRoles.forEach((roleId) => {
-                    permissions.push({
-                        'id': roleId,
-                        'type': 1,
-                        permission: true
-                    })
-                });
 
-                api.editPermissions(command.id, permissions)
-            }
-        } catch (error) {
-            console.log(`Error creating '${params.name}' command`, error);
+    let createdCommands: ApplicationCommand[] = await api.bulkOverwriteCommands(commands);
+
+    let managerOnlyCommands: string[] = [];
+
+    defaults.forEach((commandParam) => {
+        if (commandParam.managerOnly) {
+            managerOnlyCommands.push(commandParam.name);
+        }
+    })
+
+    let managerOnlyPerms: CommandPermissions[] = [];
+
+    managerRoles.forEach((roleId) => {
+        managerOnlyPerms.push({
+            'id': roleId,
+            'type': 1,
+            permission: true
+        })
+    })
+    createdCommands.forEach(async (command) => {
+        if (managerOnlyCommands.includes(command.name)) {
+            api.editPermissions(command.id, managerOnlyPerms);
         }
     })
 }
@@ -53,17 +76,9 @@ const handleCommand = (interaction: Interaction) => {
 
     let { name } = interaction.data;
 
-    try {
-        connect();
-    } catch (error) {
-        console.log(`Error connecting to DB`, error);
-    }
     switch (name) {
         case 'create':
             createTag(interaction);
-            break;
-        case 'edit':
-            editTag(interaction);
             break;
         case 'delete':
             deleteTag(interaction);
@@ -78,17 +93,65 @@ const handleCommand = (interaction: Interaction) => {
             displayTag(interaction);
             break;
     }
-
-    disconnect();
-
 }
 
 const createTag = async (interaction: Interaction) => {
-    let newContent: WebhookMessageContent = {
-        content: 'Successfully created sussy baka!'
+    let response = 'sus';
+
+    //interaction.data.options[0], [1]
+    dbCreate: try {
+        await client.connect();
+        const database = client.db('genius');
+        const tagsCollection = database.collection('tags');
+
+        if (interaction.data.options === undefined) {
+            throw new Error();
+        }
+
+        let tagName = interaction.data.options[0].value;
+
+        if (tagName === undefined) {
+            throw new Error();
+        }
+
+        if (!isValidTagName(tagName)) {
+            response = 'Tag names must start with a lowercase letter and only contain up to 32 alphanumeric characters.'
+            break dbCreate;
+        }
+
+        let error = false;
+
+        defaults.forEach((param ) => {
+            if (param.name === tagName) {
+                response = 'That name is already registered to a default command.'
+                error = true;
+            }
+        })
+
+        if (error) {
+            break dbCreate;
+        }
+
+        await tagsCollection.insertOne({
+            name: tagName,
+            content: interaction.data.options[1].value
+        });
+
+        new GuildCommandAPI(rIphoneId).createCommand({
+            'name': tagName,
+            'description': `Displays the ${tagName} tag.`
+        })
+
+        response = `Successfully created the \`${tagName}\` tag.`;
+    } catch (error) {
+        response = 'Error creating your tag. Please contact server staff.';
+        console.log(error);
+    } finally {
+        await client.close();
     }
 
-    new ResponseAPI(interaction.token).editOriginalResponse(newContent);
+
+    new ResponseAPI(interaction.token).editOriginalResponse({content: response});
 }
 
 const showFloppa = async (interaction: Interaction) => {
@@ -99,41 +162,101 @@ const showFloppa = async (interaction: Interaction) => {
     new ResponseAPI(interaction.token).editOriginalResponse(newContent);
 }
 
-const editTag = async (interaction: Interaction) => {
-
-}
-
 const deleteTag = async (interaction: Interaction) => {
+    if (interaction.data.options === undefined) {
+        throw new Error();
+    }
 
+    let tagName = interaction.data.options[0].value;
+    let response = 'Error deleting your tag. Please contact server staff.';
+    dbDelete: try {
+
+        await client.connect();
+
+        const database = client.db('genius');
+        const tagsCollection = database.collection('tags');
+
+        let isDefaultCommand = false;
+
+        defaults.forEach((param) => {
+            if (param.name === tagName) {
+                response = 'You cannot delete a default command.'
+                isDefaultCommand = true;
+            }
+        });
+
+        if (isDefaultCommand) {
+            break dbDelete;
+        }
+
+        let tag = await tagsCollection.findOne({ name: tagName });
+
+        if (tag === undefined) {
+            response = `There is no tag named \`${tagName}\`.`;
+            break dbDelete;
+        }
+
+        tagsCollection.deleteOne(tag);
+
+        let cmdApi = new GuildCommandAPI(rIphoneId);
+
+        let allCommands = await cmdApi.getAllCommands();
+
+        allCommands.forEach((command) => {
+            if (command.name === tagName) {
+                cmdApi.deleteCommand(command.id);
+            }
+        });
+
+        response = `Successfully deleted the\`${tagName}\` tag.`;
+
+    } catch (error) {
+        console.log(error);
+    } finally {
+        await client.close();
+    }
+    new ResponseAPI(interaction.token).editOriginalResponse({ content: response})
 }
 
 const updateCommands = async (interaction: Interaction) => {
-    const allTags = await Tag.find();
+    await registerCommands();
 
-    let commands: CommandParams[] = [];
-
-    allTags.forEach((tag: TagDocument) => {
-        commands.push({
-            'name': tag.name,
-            'description': `Displays the '${tag.name}' tag.`
-        });
-    });
-
-    
+    new ResponseAPI(interaction.token).editOriginalResponse({content: 'Successfully updated all commands.'});
 }
 
 const displayTag = async (interaction: Interaction) => {
     let { name } = interaction.data;
+    let content;
 
-    //Lookup name in db and display it
-    Tag.findOne({ 'name': name }, 'name content', {}, (err, tag) => {
-        let api = new ResponseAPI(interaction.token);
-        if (err || tag === null || tag.content === null) {
-            api.editOriginalResponse({ content: `There was an error displaying the \`${name}\` tag. Please notify server staff.` });
-        } else {
-            api.editOriginalResponse({ content: tag.content });
+    try {
+        await client.connect();
+        const database = client.db('genius');
+        const tagsCollection = database.collection('tags')
+
+        let tag = await tagsCollection.findOne({ name: name });
+        
+        if (tag !== undefined) {
+            content = tag.content;
         }
-    })
+    } finally {
+        await client.close();
+    }
+
+    let response = content || `There was an error displaying the \`${name}\` tag. Please contact server staff.`;
+
+    new ResponseAPI(interaction.token).editOriginalResponse({ content: response });
 }
 
-export { handleCommand, registerDefaultCommands }
+const isValidTagName = (name: string): boolean => {
+    var firstChar = name.charAt(0);
+
+
+    if (firstChar !== firstChar.toUpperCase()) {
+        if (/^[\w-]{1,32}$/.test(name)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+export { handleCommand, registerCommands }
