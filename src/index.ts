@@ -3,6 +3,8 @@ import './util/env.js'
 import { initialiseServer } from './server.js'
 initialiseServer();
 
-import { registerDefaultCommands } from './commands/commands.js';
+import { registerCommands } from './commands/commands.js';
 
-registerDefaultCommands();
+registerCommands();
+
+export { };

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { ApplicationCommand, CommandParams, CommandPermissions, Credentials } from "../types";
+import { ApplicationCommand, CommandParams, CommandPermissions, Credentials, GuildCommandPermissions } from "../types";
 
 import { URLSearchParams } from 'url';
 
@@ -48,14 +48,13 @@ class CommandAPI {
         return response.data;
     }
 
-    bulkOverwriteCommands = async (data: ApplicationCommand[]): Promise<ApplicationCommand[]> => {
+    bulkOverwriteCommands = async (data: CommandParams[]): Promise<ApplicationCommand[]> => {
         let response = await this.api.put('', data);
         return response.data;
     }
 
     createCommand = async (params: CommandParams): Promise<ApplicationCommand> => {
         let response = await this.api.post('', params);
-
         return response.data;
     }
 
@@ -107,12 +106,12 @@ export class GuildCommandAPI extends CommandAPI {
     //Can add getAllPermissions - don't see a need for it though
     //Can also add batch edit permissions if we need to down the track
 
-    getPermissions = async (commandId: string): Promise<CommandPermissions[]> => {
+    getPermissions = async (commandId: string): Promise<GuildCommandPermissions[]> => {
         let response = await this.api.get(`${commandId}/permissions`);
         return response.data;
     }
 
-    editPermissions = async (commandId: string, permissions: CommandPermissions[]): Promise<CommandPermissions[]> => {
+    editPermissions = async (commandId: string, permissions: CommandPermissions[]): Promise<GuildCommandPermissions[]> => {
         let response = await this.api.put(`${commandId}/permissions`, { 'permissions': permissions });
         return response.data;
     }

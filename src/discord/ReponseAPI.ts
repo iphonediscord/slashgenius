@@ -15,7 +15,6 @@ export class ResponseAPI {
         this.api.interceptors.response.use(response => response, (error) => {
             console.log(error.response.data);
             console.log(error.response.status);
-            console.log(error.response.headers);
         });
     }
 
@@ -25,7 +24,7 @@ export class ResponseAPI {
     }
 
     editOriginalResponse = async (content: WebhookMessageContent) => {
-        let response = await this.api.patch('', { 'data': content });
+        let response = await this.api.patch('', content);
         return response.data;
     }
 

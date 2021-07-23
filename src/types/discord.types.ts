@@ -36,11 +36,17 @@ export type CommandParams = {
     default_permission?: boolean
 }
 
-export type CommandPermissions = {
+export type GuildCommandPermissions = {
     id: string,
     application_id: string,
     guild_id: string,
     permissions: string,
+}
+
+export type CommandPermissions = {
+    id: string,
+    type: 1|2,
+    permission: boolean
 }
 
 export type CmdInteractionOption = {
@@ -65,7 +71,7 @@ export type Interaction = {
     channel_id?: string,
     token: string,
     version: 1
-    //Message belongs here if we need it in the future
+    //We can get the original message (Message) here if we need it in the future
 }
 
 //Only support content so far, can expand in future if need be
