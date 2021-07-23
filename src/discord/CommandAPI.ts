@@ -55,7 +55,6 @@ class CommandAPI {
 
     createCommand = async (params: CommandParams): Promise<ApplicationCommand> => {
         let response = await this.api.post('', params);
-
         return response.data;
     }
 
