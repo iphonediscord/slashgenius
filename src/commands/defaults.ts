@@ -43,6 +43,11 @@ const defaults = [
         "name": "floppa",
         "description": "Big Floppa",
         "managerOnly": false
+    },
+    {
+        "name": "waffles",
+        "description": "pussyclot",
+        "managerOnly": false
     }
 ]
 
