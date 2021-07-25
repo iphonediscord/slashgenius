@@ -217,7 +217,7 @@ const deleteTag = async (interaction: Interaction) => {
       }
     });
 
-    response = `Successfully deleted the\`${tagName}\` tag.`;
+    response = `Successfully deleted the \`${tagName}\` tag.`;
   } catch (error) {
     console.log(error);
   } finally {
