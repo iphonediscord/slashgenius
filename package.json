@@ -2,7 +2,7 @@
   "name": "slashgenius",
   "version": "1.0.0",
   "engines": {
-    "node": "16.5.0"
+    "node": "16.6.2"
   },
   "type": "module",
   "scripts": {
